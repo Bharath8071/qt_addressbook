@@ -79,6 +79,42 @@ MainWindow::MainWindow(QWidget *parent)
 
     });
 
+    connect(ui->deleteButton, &QPushButton::clicked, this, [=]() {
+
+        int row = ui->contactsTable->currentRow();
+
+        if(row < 0)
+        {
+            QMessageBox::warning(this, "Warning", "Please select a contact to delete.");
+            return;
+        }
+
+        QString mobile = ui->contactsTable->item(row,1)->text();
+
+        QMessageBox::StandardButton reply;
+
+        reply = QMessageBox::question(this,
+                                      "Delete Contact",
+                                      "Are you sure you want to delete this contact?",
+                                      QMessageBox::Yes | QMessageBox::No);
+
+        if(reply == QMessageBox::Yes)
+        {
+            QSqlQuery query;
+
+            query.prepare("DELETE FROM contacts WHERE mobile=?");
+            query.addBindValue(mobile);
+
+            if(!query.exec())
+            {
+                qDebug() << "Delete failed:" << query.lastError();
+            }
+
+            loadContacts();
+        }
+
+    });
+
     loadContacts();
 }
 

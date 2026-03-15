@@ -5,6 +5,9 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QTableWidgetItem>
+#include <QMessageBox>
+
+#include <QLineEdit>
 
 #include <addcontactdialog.h>
 
@@ -47,6 +50,34 @@ MainWindow::MainWindow(QWidget *parent)
 
     });
 
+    connect(ui->editButton, &QPushButton::clicked, this, [=]() {
+
+        int row = ui->contactsTable->currentRow();
+
+        if(row < 0)
+            return;
+
+        QString name = ui->contactsTable->item(row,0)->text();
+        QString mobile = ui->contactsTable->item(row,1)->text();
+        QString email = ui->contactsTable->item(row,2)->text();
+        QString birthday = ui->contactsTable->item(row,3)->text();
+
+        AddContactDialog dialog;
+
+        dialog.editMode = true;
+        dialog.originalMobile = mobile;
+
+
+        dialog.findChild<QLineEdit*>("nameLineEdit")->setText(name);
+        dialog.findChild<QLineEdit*>("mobileLineEdit")->setText(mobile);
+        dialog.findChild<QLineEdit*>("emailLineEdit")->setText(email);
+
+        if(dialog.exec() == QDialog::Accepted)
+        {
+            loadContacts();
+        }
+
+    });
 
     loadContacts();
 }

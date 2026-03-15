@@ -5,6 +5,8 @@
 #include <QSqlError>
 #include <QDebug>
 
+#include <QDate>
+
 AddContactDialog::AddContactDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AddContactDialog)
@@ -20,14 +22,28 @@ AddContactDialog::AddContactDialog(QWidget *parent)
 
         QSqlQuery query;
 
-        query.prepare("INSERT INTO contacts (name, mobile, email, birthday) "
-                      "VALUES (?, ?, ?, ?)");
+        if (!editMode)
+        {
+            query.prepare("INSERT INTO contacts (name, mobile, email, birthday) "
+                          "VALUES (?, ?, ?, ?)");
 
-        query.addBindValue(name);
-        query.addBindValue(mobile);
-        query.addBindValue(email);
-        query.addBindValue(birthday);
+            query.addBindValue(name);
+            query.addBindValue(mobile);
+            query.addBindValue(email);
+            query.addBindValue(birthday);
+        }
 
+        else
+        {
+            query.prepare("UPDATE contacts SET name=?, mobile=?, email=?, birthday=? WHERE mobile=?");
+
+            query.addBindValue(name);
+            query.addBindValue(mobile);
+            query.addBindValue(email);
+            query.addBindValue(birthday);
+            query.addBindValue(originalMobile);
+
+        }
         if(!query.exec())
         {
             qDebug() << "Insert failed:" << query.lastError();
@@ -37,6 +53,27 @@ AddContactDialog::AddContactDialog(QWidget *parent)
     });
 
 }
+
+void AddContactDialog::setName(QString name)
+{
+    ui->nameLineEdit->setText(name);
+}
+
+void AddContactDialog::setMobile(QString mobile)
+{
+    ui->mobileLineEdit->setText(mobile);
+}
+
+void AddContactDialog::setEmail(QString email)
+{
+    ui->emailLineEdit->setText(email);
+}
+
+void AddContactDialog::setBirthday(QString birthday)
+{
+    ui->birthdayDateEdit->setDate(QDate::fromString(birthday,"yyyy-MM-dd"));
+}
+
 
 AddContactDialog::~AddContactDialog()
 {

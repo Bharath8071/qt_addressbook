@@ -133,7 +133,7 @@
     </font>
    </property>
    <property name="text">
-    <string>(YYYY/MM/DD)</string>
+    <string>(DD/MM/YYYY)</string>
    </property>
    <property name="textInteractionFlags">
     <set>Qt::LinksAccessibleByMouse</set>

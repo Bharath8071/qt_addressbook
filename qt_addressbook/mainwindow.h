@@ -19,5 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    void loadContacts();
 };
 #endif // MAINWINDOW_H

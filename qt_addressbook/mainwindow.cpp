@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QTableWidgetItem>
 
+#include <addcontactdialog.h>
+
 void MainWindow::loadContacts()
 {
     ui->contactsTable->setRowCount(0);
@@ -34,6 +36,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
 
+    connect(ui->addButton, &QPushButton::clicked, this, [=]() {
+
+        AddContactDialog dialog;
+
+        if(dialog.exec() == QDialog::Accepted)
+        {
+            loadContacts(); // refresh table
+        }
+
+    });
+
+
     loadContacts();
 }
 
@@ -41,3 +55,4 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+

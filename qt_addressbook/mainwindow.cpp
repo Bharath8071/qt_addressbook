@@ -11,6 +11,8 @@
 
 #include <addcontactdialog.h>
 
+#include <QHeaderView>
+
 void MainWindow::loadContacts()
 {
     ui->contactsTable->setRowCount(0);
@@ -38,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->contactsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->contactsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->addButton, &QPushButton::clicked, this, [=]() {
 
@@ -85,12 +89,12 @@ MainWindow::MainWindow(QWidget *parent)
 
         if(row < 0)
         {
-            QMessageBox::warning(this, "Warning", "Please select a contact to delete.");
+            QMessageBox::warning(this, "Warning", "Please select a contact id to delete.");
             return;
         }
 
-        QString mobile = ui->contactsTable->item(row,1)->text();
-
+        QString id = ui->contactsTable->item(row,1)->text();
+        qDebug()<< "The value of id" <<id;
         QMessageBox::StandardButton reply;
 
         reply = QMessageBox::question(this,
@@ -102,8 +106,8 @@ MainWindow::MainWindow(QWidget *parent)
         {
             QSqlQuery query;
 
-            query.prepare("DELETE FROM contacts WHERE mobile=?");
-            query.addBindValue(mobile);
+            query.prepare("DELETE FROM contacts WHERE id=?");
+            query.addBindValue(id);
 
             if(!query.exec())
             {

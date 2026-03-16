@@ -358,13 +358,13 @@ These packages provide:
 Download the project from GitHub:
 
 ```bash
-git clone https://github.com/<your-username>/qt-addressbook.git
+https://github.com/Bharath8071/qt_addressbook.git
 ```
 
 Move into the project directory:
 
 ```bash
-cd qt-addressbook
+cd qt_addressbook
 ```
 
 ---

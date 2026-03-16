@@ -7,6 +7,9 @@
 
 #include <QDate>
 
+#include <QRegularExpression>
+#include <QMessageBox>
+
 AddContactDialog::AddContactDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AddContactDialog)
@@ -19,6 +22,28 @@ AddContactDialog::AddContactDialog(QWidget *parent)
         QString mobile = ui->mobileLineEdit->text();
         QString email = ui->emailLineEdit->text();
         QString birthday = ui->birthdayDateEdit->date().toString("yyyy-MM-dd");
+
+        if(name.isEmpty())
+        {
+            QMessageBox::warning(this,"Error","Name cannot be empty");
+            return;
+        }
+
+        QRegularExpression mobileRegex("^[0-9]+$");
+
+        if(!mobileRegex.match(mobile).hasMatch())
+        {
+            QMessageBox::warning(this,"Error","Mobile number must contain digits only");
+            return;
+        }
+
+        QRegularExpression emailRegex("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
+
+        if(!emailRegex.match(email).hasMatch())
+        {
+            QMessageBox::warning(this,"Error","Invalid email address");
+            return;
+        }
 
         QSqlQuery query;
 

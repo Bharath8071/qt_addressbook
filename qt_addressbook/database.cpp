@@ -19,7 +19,7 @@ bool Database::initialize()
     query.exec("CREATE TABLE IF NOT EXISTS contacts ("
                "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                "name TEXT,"
-               "mobile TEXT,"
+               "mobile TEXT UNIQUE,"
                "email TEXT,"
                "birthday TEXT)");
 

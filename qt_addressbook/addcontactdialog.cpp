@@ -45,10 +45,26 @@ AddContactDialog::AddContactDialog(QWidget *parent)
             return;
         }
 
+        if (!(mobile.length()==10)) {
+            QMessageBox::warning(this,"Error","Invalid mobile number");
+            return;
+        }
+
         QSqlQuery query;
 
         if (!editMode)
         {
+            QSqlQuery checkQuery;
+            checkQuery.prepare("SELECT COUNT(*) FROM contacts WHERE mobile=?");
+            checkQuery.addBindValue(mobile);
+            checkQuery.exec();
+
+            if(checkQuery.next() && checkQuery.value(0).toInt() > 0)
+            {
+                QMessageBox::warning(this,"Error","Mobile number already exists");
+                return;
+            }
+
             query.prepare("INSERT INTO contacts (name, mobile, email, birthday) "
                           "VALUES (?, ?, ?, ?)");
 

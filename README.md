@@ -380,7 +380,7 @@ qmake
 This command reads the file:
 
 ```
-qt-addressbook.pro
+qt_addressbook.pro
 ```
 
 and prepares the build configuration.
@@ -410,7 +410,7 @@ After successful compilation, the executable file will appear in the project dir
 Run the program using:
 
 ```bash
-./qt-addressbook
+./qt_addressbook
 ```
 
 This launches the **Qt Address Book Application**.

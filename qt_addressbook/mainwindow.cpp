@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
 
         QString id = ui->contactsTable->item(row,1)->text();
-        qDebug()<< "The value of id" <<id;
+        //        qDebug()<< "The value of id" <<id;
         QMessageBox::StandardButton reply;
 
         reply = QMessageBox::question(this,
@@ -106,7 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
         {
             QSqlQuery query;
 
-            query.prepare("DELETE FROM contacts WHERE id=?");
+            query.prepare("DELETE FROM contacts WHERE mobile=?");
             query.addBindValue(id);
 
             if(!query.exec())
